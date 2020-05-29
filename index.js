@@ -11,7 +11,7 @@ import * as IO from './lib/io'
 function parseArguments(rawArgs) {
   const args = arg(
     {
-      '--version': Boolean,
+      '--version': String,
       '--major': Boolean,
       '--minor': Boolean,
       '--patch': Boolean,
@@ -25,19 +25,25 @@ function parseArguments(rawArgs) {
     }
   )
   return {
-    version: args['--version'] || false,
-    major: args['--major'] || false,
-    minor: args['--minor'] || false,
-    patch: args['--patch'] || false,
-    premajor: args['--premajor'] || false,
-    preminor: args['--preminor'] || false,
-    prepatch: args['--prepatch'] || false,
-    prerelease: args['--prerelease'] || false,
+    version: args['--version'] || undefined,
+    major: args['--major'] || undefined,
+    minor: args['--minor'] || undefined,
+    patch: args['--patch'] || undefined,
+    premajor: args['--premajor'] || undefined,
+    preminor: args['--preminor'] || undefined,
+    prepatch: args['--prepatch'] || undefined,
+    prerelease: args['--prerelease'] || undefined,
   }
 }
 
 async function versionCommand(args, pkg) {
   const pkgVersion = await Version.parsePackageVersion(pkg)
+
+  if (!pkgVersion) {
+    console.log(pkgVersion)
+
+    IO.printRedAndExit('Invalid version format in package.json.')
+  }
 
   IO.printWhite(
     `Current package version: ${await Version.stringify(pkgVersion)}`
@@ -51,6 +57,11 @@ async function versionCommand(args, pkg) {
     newVersion = await Version.minorVersion(newVersion)
   } else if (args.patch || args.prepatch) {
     newVersion = await Version.patchVersion(newVersion)
+  } else if (args.version) {
+    newVersion = await Version.parseVersion(args.version)
+    if (!newVersion) {
+      IO.printRedAndExit('Invalid version format specified.', 1)
+    }
   }
 
   if (args.prerelease || args.premajor || args.preminor || args.prepatch) {
@@ -58,7 +69,7 @@ async function versionCommand(args, pkg) {
   }
 
   if (pkgVersion === newVersion) {
-    IO.printRedAndExit('No version specified', 1)
+    IO.printRedAndExit('Version was not changed.', 1)
   }
 
   pkg.version = await Version.stringify(newVersion)
