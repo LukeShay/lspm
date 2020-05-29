@@ -1,7 +1,15 @@
 {
-  "name": "@lukeshay/package-manager",
+  "name": "@lukeshay/lspm",
   "version": "0.0.1",
-  "description": "",
+  "description": "A tool to manage your NPM package.",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LukeShay/lspm.git"
+  },
   "scripts": {
     "lint": "eslint '**/*.js'",
     "format": "eslint '**/*.js' --fix"
