@@ -21,10 +21,12 @@ function parseArguments(rawArgs) {
       '--prerelease': Boolean,
     },
     {
-      argv: rawArgs.slice(3),
+      argv: rawArgs.slice(2),
     }
   )
+
   return {
+    commands: args['_'] || undefined,
     version: args['--version'] || undefined,
     major: args['--major'] || undefined,
     minor: args['--minor'] || undefined,
@@ -39,9 +41,9 @@ function parseArguments(rawArgs) {
 async function versionCommand(args, pkg) {
   const pkgVersion = await Version.parsePackageVersion(pkg)
 
-  if (!pkgVersion) {
-    console.log(pkgVersion)
+  console.log(args)
 
+  if (!pkgVersion) {
     IO.printRedAndExit('Invalid version format in package.json.')
   }
 
@@ -87,17 +89,20 @@ export async function run(args) {
     chalk.yellow(figlet.textSync('LSPM', { horizontalLayout: 'full' }))
   )
 
-  const command = args[2] || undefined
+  args = parseArguments(args)
 
-  if (!command) {
+  if (!args.commands || !args.commands.length) {
     IO.printRedAndExit('No command specified.', 1)
   }
 
-  args = parseArguments(args)
-
   const pkg = await getPackage()
 
-  if (command === 'version') {
+  if (args.commands[0] === 'version') {
     versionCommand(args, pkg)
+  } else {
+    IO.printRedAndExit(
+      "Invalid command passed in. Run the command 'nspm help' for valid commands.",
+      1
+    )
   }
 }

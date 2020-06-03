@@ -1,6 +1,6 @@
 {
   "name": "@lukeshay/lspm",
-  "version": "0.0.2-0",
+  "version": "0.0.2-1",
   "description": "A tool to manage your NPM package.",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
@@ -20,6 +20,12 @@
   "bin": {
     "lspm": "./bin/run.sh"
   },
+  "files": [
+    "index.js",
+    "README.md",
+    "lib",
+    "bin"
+  ],
   "dependencies": {
     "arg": "^4.1.3",
     "chalk": "^4.0.0",
@@ -27,7 +33,8 @@
     "clui": "^0.3.6",
     "esm": "^3.2.25",
     "figlet": "^1.4.0",
-    "inquirer": "^7.1.0"
+    "inquirer": "^7.1.0",
+    "simple-git": "^2.5.0"
   },
   "devDependencies": {
     "@lukeshay/eslint-config": "^1.0.1",
