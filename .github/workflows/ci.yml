@@ -16,6 +16,8 @@ jobs:
         uses: actions/setup-node@v1.4.2
         with:
           node-version: ${{ matrix.node }}
+      - name: Install dependencies
+        run: npm i
       - name: Run build
         run: npm run build
   test:
@@ -28,6 +30,8 @@ jobs:
         uses: actions/setup-node@v1.4.2
         with:
           node-version: 12
+      - name: Install dependencies
+        run: npm i
       - name: Run tests
         run: npm run test
   publish:
@@ -43,6 +47,8 @@ jobs:
         with:
           node-version: 12
           registry-url: 'https://registry.npmjs.org'
+      - name: Install dependencies
+        run: npm i
       - name: Run build
         run: npm run build
       - name: Run publish
