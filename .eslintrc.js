@@ -1,4 +1,6 @@
 module.exports = {
-  parser: 'babel-eslint',
-  extends: ['@lukeshay/eslint-config'],
+  extends: ['@lukeshay/eslint-config-typescript'],
+  rules: {
+    indent: 0,
+  },
 }

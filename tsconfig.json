@@ -1,0 +1,3 @@
+{
+  "extends": "@lukeshay/typescript-config/tsconfig"
+}

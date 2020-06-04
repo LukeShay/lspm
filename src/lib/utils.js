@@ -1,10 +1,10 @@
-async function stringify(pkgVersion) {
+function stringify(pkgVersion) {
   return `${pkgVersion.major}.${pkgVersion.minor}.${pkgVersion.patch}${
     pkgVersion.pre !== undefined ? '-' + pkgVersion.pre : ''
   }`
 }
 
-async function parseVersion(version) {
+function parseVersion(version) {
   if (!version) return {}
 
   const split = version.split('.')
@@ -28,14 +28,14 @@ async function parseVersion(version) {
     pre: parseSplitI(split[3]),
   }
 
-  return await validateVersion(parsedVersion)
+  return validateVersion(parsedVersion)
 }
 
-async function parsePackageVersion(pkg) {
-  return await parseVersion(pkg.version)
+function parsePackageVersion(pkg) {
+  return parseVersion(pkg.version)
 }
 
-async function majorVersion(pkgVersion) {
+function majorVersion(pkgVersion) {
   return {
     ...pkgVersion,
     major: pkgVersion.major + 1,
@@ -43,7 +43,7 @@ async function majorVersion(pkgVersion) {
   }
 }
 
-async function minorVersion(pkgVersion) {
+function minorVersion(pkgVersion) {
   return {
     ...pkgVersion,
     minor: pkgVersion.minor + 1,
@@ -51,7 +51,7 @@ async function minorVersion(pkgVersion) {
   }
 }
 
-async function patchVersion(pkgVersion) {
+function patchVersion(pkgVersion) {
   return {
     ...pkgVersion,
     patch: pkgVersion.patch + 1,
@@ -59,14 +59,14 @@ async function patchVersion(pkgVersion) {
   }
 }
 
-async function preVersion(pkgVersion) {
+function preVersion(pkgVersion) {
   return {
     ...pkgVersion,
     pre: isNaN(pkgVersion.pre) ? 0 : pkgVersion.pre + 1,
   }
 }
 
-async function validateVersion(version) {
+function validateVersion(version) {
   return version.major !== undefined &&
     version.minor !== undefined &&
     version.patch !== undefined

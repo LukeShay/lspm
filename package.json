@@ -11,8 +11,13 @@
     "url": "https://github.com/LukeShay/lspm.git"
   },
   "scripts": {
-    "lint": "eslint '**/*.js'",
-    "format": "eslint '**/*.js' --fix"
+    "test": "jest",
+    "test:cov": "jest --coverage",
+    "lint": "eslint '**/*.js' --ignore-path ./.gitignore",
+    "format": "eslint '**/*.js' --fix --ignore-path ./.gitignore",
+    "build": "TERSE=true rollup -c",
+    "build:watch": "rollup -cw",
+    "build:dev": "rollup -c"
   },
   "keywords": [],
   "author": "Luke Shay <https://github.com/LukeShay",
@@ -20,9 +25,10 @@
   "bin": {
     "lspm": "./bin/run.sh"
   },
+  "main": "dist/index.js",
   "files": [
-    "index.js",
     "README.md",
+    "package.json",
     "lib",
     "bin"
   ],
@@ -31,14 +37,23 @@
     "chalk": "^4.0.0",
     "clear": "^0.1.0",
     "clui": "^0.3.6",
-    "esm": "^3.2.25",
-    "figlet": "^1.4.0",
-    "inquirer": "^7.1.0",
-    "simple-git": "^2.5.0"
+    "inquirer": "^7.1.0"
   },
   "devDependencies": {
-    "@lukeshay/eslint-config": "^1.0.1",
+    "@babel/preset-env": "^7.10.2",
+    "@babel/preset-typescript": "^7.10.1",
+    "@lukeshay/eslint-config-typescript": "^1.0.2",
+    "@lukeshay/jest-config": "^1.0.1",
+    "@lukeshay/typescript-config": "^1.0.0",
+    "@rollup/plugin-babel": "^5.0.2",
+    "@rollup/plugin-commonjs": "^12.0.0",
+    "@rollup/plugin-node-resolve": "^8.0.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.1.0"
+    "eslint": "^7.1.0",
+    "rollup": "^2.13.1",
+    "rollup-plugin-eslint": "^7.0.0",
+    "rollup-plugin-terser": "^6.1.0",
+    "rollup-plugin-typescript2": "^0.27.1",
+    "typescript": "^3.9.3"
   }
 }
