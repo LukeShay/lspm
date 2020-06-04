@@ -1,0 +1,61 @@
+name: nightly build
+
+on:
+  schedule:
+    - cron: "0 4 * * *"
+      
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.2.0
+        with:
+          ref: refs/heads/master
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v1.4.2
+        with:
+          node-version: 12
+      - name: Install dependencies
+        run: npm i
+      - name: Run build
+        run: npm run build
+      - name: Run tests
+        run: npm run test
+  publish:
+    runs-on: ubuntu-latest
+    needs: [build, test]
+    name: Version and publish
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.2.0
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v1.4.2
+        with:
+          node-version: 12
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install dependencies
+        run: npm i
+      - name: Run build
+        run: npm run build
+      - name: Install lspm
+        run: npm i -g
+      - name: Version
+        run: lspm version --prerelease
+      - name: Run publish
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "Add changes" -a
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Tag
+        uses: Klemensas/action-autotag@stable
+        with:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
