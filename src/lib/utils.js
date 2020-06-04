@@ -66,6 +66,13 @@ function preVersion(pkgVersion) {
   }
 }
 
+function releaseVersion(pkgVersion) {
+  return {
+    ...pkgVersion,
+    pre: undefined,
+  }
+}
+
 function validateVersion(version) {
   return version.major !== undefined &&
     version.minor !== undefined &&
@@ -81,6 +88,7 @@ export const Version = {
   minorVersion,
   patchVersion,
   preVersion,
+  releaseVersion,
   parseVersion,
   validateVersion,
 }

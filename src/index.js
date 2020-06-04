@@ -18,6 +18,7 @@ function parseArguments(rawArgs) {
       '--preminor': Boolean,
       '--prepatch': Boolean,
       '--prerelease': Boolean,
+      '--release': Boolean,
     },
     {
       argv: rawArgs.slice(2),
@@ -34,6 +35,7 @@ function parseArguments(rawArgs) {
     preminor: args['--preminor'] || undefined,
     prepatch: args['--prepatch'] || undefined,
     prerelease: args['--prerelease'] || undefined,
+    release: args['--release'] || undefined,
   }
 }
 
@@ -54,6 +56,8 @@ function versionCommand(args, pkg) {
     newVersion = Version.minorVersion(newVersion)
   } else if (args.patch || args.prepatch) {
     newVersion = Version.patchVersion(newVersion)
+  } else if (args.release) {
+    newVersion = Version.releaseVersion(newVersion)
   } else if (args.version) {
     newVersion = Version.parseVersion(args.version)
     if (!newVersion) {
