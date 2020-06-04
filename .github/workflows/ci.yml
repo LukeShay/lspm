@@ -1,0 +1,9 @@
+name: ci
+
+on: [push]
+
+jobs:
+  name: Lint
+  lint:
+    runs-on: ubuntu-latest
+    steps:
