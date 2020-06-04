@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: "0 4 * * *"
       
-steps:
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:
@@ -15,7 +15,9 @@ steps:
       - name: Setup Node.js environment
         uses: actions/setup-node@v1.4.2
         with:
-          node-version: 18
+          node-version: 12
+      - name: Install dependencies
+        run: npm i
       - name: Run build
         run: npm run build
       - name: Run tests
@@ -32,6 +34,8 @@ steps:
         with:
           node-version: 12
           registry-url: 'https://registry.npmjs.org'
+      - name: Install dependencies
+        run: npm i
       - name: Run build
         run: npm run build
       - name: Install lspm
