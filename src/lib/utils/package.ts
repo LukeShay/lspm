@@ -11,7 +11,5 @@ export function updatePackage(pkg: Package): Package {
   writeFileSync('./package.json', JSON.stringify(pkg, null, 2))
   unlinkSync('./package-temp.json')
 
-  const newPkg = getPackage()
-
-  return newPkg
+  return getPackage()
 }

@@ -22,3 +22,21 @@ export interface Version {
 export interface Package {
   version: string
 }
+
+export interface Release {
+  version: string
+  date: string
+  added: string[]
+  changed: string[]
+  fixed: string[]
+}
+
+export interface Changelog {
+  releases: Release[]
+}
+
+export interface Data {
+  day: number
+  month: number
+  year: number
+}

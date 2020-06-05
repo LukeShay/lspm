@@ -5,8 +5,9 @@ import { FileUtils, VersionUtils } from './lib'
 
 import arg from 'arg'
 
-const Commands = {
-  VERSION: 'version',
+enum Commands {
+  VERSION = 'version',
+  CHANGE = 'change',
 }
 
 function parseArguments(rawArgs: string[]): Args {
@@ -102,6 +103,8 @@ function versionCommand(args: Args, pkg: Package): void {
   )
 }
 
+function changeCommand(args: Args, pkg: Package): void {}
+
 export function run(args: string[]): void {
   const parsedArgs = parseArguments(args)
 
@@ -115,6 +118,8 @@ export function run(args: string[]): void {
     case Commands.VERSION:
       versionCommand(parsedArgs, pkg)
       return
+    case Commands.CHANGE:
+      changeCommand(parsedArgs, pkg)
     default:
       IO.printRedAndExit(
         "Invalid command passed in. Run the command 'nspm help' for valid commands.",
