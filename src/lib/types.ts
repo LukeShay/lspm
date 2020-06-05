@@ -40,3 +40,8 @@ export interface Data {
   month: number
   year: number
 }
+
+export interface ArgHelp {
+  arg: string
+  message: string
+}
