@@ -3,7 +3,7 @@ name: nightly build
 on:
   schedule:
     - cron: "0 4 * * *"
-      
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -41,7 +41,7 @@ jobs:
       - name: Install lspm
         run: npm i -g
       - name: Version
-        run: lspm version --prerelease
+        run: lspm version --nightly
       - name: Run publish
         run: npm publish
         env:
@@ -59,3 +59,4 @@ jobs:
         uses: Klemensas/action-autotag@stable
         with:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          tag_prefix: "v"

@@ -1,12 +1,12 @@
 import commonjs from '@rollup/plugin-commonjs'
-import resolve from '@rollup/plugin-node-resolve'
-import typescript from 'rollup-plugin-typescript2'
 import { eslint } from 'rollup-plugin-eslint'
-import { terser } from 'rollup-plugin-terser'
 import pkg from './package.json'
+import resolve from '@rollup/plugin-node-resolve'
+import { terser } from 'rollup-plugin-terser'
+import typescript from 'rollup-plugin-typescript2'
 
 export default {
-  input: 'src/index.js',
+  input: 'src/index.ts',
   output: [
     {
       file: pkg.main,
@@ -16,15 +16,16 @@ export default {
     },
   ],
   plugins: [
+    eslint(),
     typescript({
       tsconfig: './tsconfig.json',
     }),
-    process.env.TERSE && terser({
-      compress: true,
-      mangle: true,
-    }),
+    process.env.TERSE &&
+      terser({
+        compress: true,
+        mangle: true,
+      }),
     resolve(),
     commonjs(),
-    eslint(),
   ],
 }

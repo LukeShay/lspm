@@ -1,3 +1,5 @@
 {
-  "extends": "@lukeshay/typescript-config/tsconfig"
+  "extends": "@lukeshay/typescript-config/tsconfig",
+  "include": ["./src/**/*.ts"],
+  "exclude": ["./node_modules/**/*", "./src/**/*.spec.ts"],
 }
