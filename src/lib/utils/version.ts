@@ -1,4 +1,4 @@
-import { Package, Version } from '../types'
+import { Package, Version, VersionTypes } from '../types'
 
 export function stringify(version: Version): string {
   return `${version.major}.${version.minor}.${version.patch}${
@@ -20,10 +20,10 @@ export function parseVersion(version: string): Version | undefined {
     split[3] = minorSplit[1]
   }
 
-  const parseSplitI = (num: string): number | undefined =>
-    isNaN(parseInt(num)) ? undefined : parseInt(num)
+  const parseSplitI = (num: string): number =>
+    isNaN(parseInt(num)) ? 0 : parseInt(num)
 
-  const parsedVersion = {
+  const parsedVersion: Version = {
     major: parseSplitI(split[0]),
     minor: parseSplitI(split[1]),
     patch: parseSplitI(split[2]),
@@ -64,7 +64,7 @@ export function patchVersion(version: Version): Version {
 export function preVersion(version: Version): Version {
   return {
     ...version,
-    pre: version.pre !== undefined ? version.pre + 1 : 0,
+    pre: version.pre === undefined || isNaN(version.pre) ? 0 : version.pre + 1,
   }
 }
 
@@ -75,10 +75,19 @@ export function releaseVersion(version: Version): Version {
   }
 }
 
-export function validateVersion(version: any): Version | undefined {
+export function validateVersion(version: Version): Version | undefined {
   return version.major !== undefined &&
     version.minor !== undefined &&
     version.patch !== undefined
     ? version
     : undefined
+}
+
+export function isPreVersion(versionType: string | undefined): boolean {
+  return (
+    versionType === VersionTypes.PREMAJOR ||
+    versionType === VersionTypes.PREMINOR ||
+    versionType === VersionTypes.PREPATCH ||
+    versionType === VersionTypes.NIGHTLY
+  )
 }

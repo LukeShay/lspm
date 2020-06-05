@@ -1,15 +1,6 @@
 export interface Args {
   commands: any[]
-  custom?: string
-  major?: boolean
-  minor?: boolean
-  patch?: boolean
-  premajor?: boolean
-  preminor?: boolean
-  prepatch?: boolean
-  prerelease?: boolean
-  release?: boolean
-  nightly?: boolean
+  type?: string
 }
 
 export interface Version {
@@ -41,7 +32,19 @@ export interface Data {
   year: number
 }
 
-export interface ArgHelp {
+export interface CommandHelp {
   arg: string
   message: string
+}
+
+export enum VersionTypes {
+  MAJOR = 'major',
+  MINOR = 'minor',
+  PATCH = 'patch',
+  PREMAJOR = 'premajor',
+  PREMINOR = 'preminor',
+  PREPATCH = 'prepatch',
+  PRERELEASE = 'prerelease',
+  RELEASE = 'release',
+  NIGHTLY = 'nightly',
 }

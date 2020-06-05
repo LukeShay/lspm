@@ -9,6 +9,8 @@
 
 # Introducion
 
+[![npm version](https://badge.fury.io/js/%40lukeshay%2Flspm.svg)](https://badge.fury.io/js/%40lukeshay%2Flspm)
+
 This program is a CLI tool that can be used to manage your NPM package. There are a few useful commands that make the creation of a changelog and version handling substantially easier than the standard way of doing it. This document will describe the commands and how they can be used. Please note, any version with `-n` where `n` is a number is a nightly build which is considered experiemental. Therefore those builds may have bugs and we do not recommend using them unless you have a reason to.
 
 # Commands

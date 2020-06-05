@@ -1,7 +1,7 @@
 import * as IO from './lib/utils/io'
 
-import { Args, Package, Version } from './lib/types'
-import { FileUtils, VersionUtils } from './lib'
+import { Args, CommandHelp, Package, Version, VersionTypes } from './lib/types'
+import { PackageUtils, VersionUtils } from './lib'
 
 import arg from 'arg'
 
@@ -10,19 +10,23 @@ enum Commands {
   CHANGE = 'change',
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const COMMAND_HELP: CommandHelp[] = [
+  {
+    arg: 'version',
+    message: 'Bumps the version in your package.json file',
+  },
+  {
+    arg: 'change',
+    message: 'Adds a change to CHANGELOG.json and CHANGELOG.md',
+  },
+]
+
 function parseArguments(rawArgs: string[]): Args {
   const args = arg(
     {
-      '--custom': String,
-      '--major': Boolean,
-      '--minor': Boolean,
-      '--patch': Boolean,
-      '--premajor': Boolean,
-      '--preminor': Boolean,
-      '--prepatch': Boolean,
-      '--prerelease': Boolean,
-      '--release': Boolean,
-      '--nightly': Boolean,
+      '--type': String,
+      '-t': '--type',
     },
     {
       argv: rawArgs.slice(2),
@@ -31,16 +35,7 @@ function parseArguments(rawArgs: string[]): Args {
 
   return {
     commands: args['_'] || undefined,
-    custom: args['--custom'] || undefined,
-    major: args['--major'] || undefined,
-    minor: args['--minor'] || undefined,
-    patch: args['--patch'] || undefined,
-    premajor: args['--premajor'] || undefined,
-    preminor: args['--preminor'] || undefined,
-    prepatch: args['--prepatch'] || undefined,
-    prerelease: args['--prerelease'] || undefined,
-    release: args['--release'] || undefined,
-    nightly: args['--nightly'] || undefined,
+    type: args['--type'],
   }
 }
 
@@ -58,34 +53,39 @@ function versionCommand(args: Args, pkg: Package): void {
 
   let newVersion: Version | undefined = pkgVersion
 
-  if (args.major || args.premajor) {
-    newVersion = VersionUtils.majorVersion(newVersion)
-  } else if (args.minor || args.preminor) {
-    newVersion = VersionUtils.minorVersion(newVersion)
-  } else if (
-    args.patch ||
-    args.prepatch ||
-    (args.nightly && pkgVersion.pre === undefined)
-  ) {
-    newVersion = VersionUtils.patchVersion(newVersion)
-  } else if (args.release) {
-    newVersion = VersionUtils.releaseVersion(newVersion)
-  } else if (args.custom) {
-    newVersion = VersionUtils.parseVersion(args.custom)
-
-    if (!newVersion) {
-      IO.printRedAndExit('Invalid version format specified.', 1)
-      return
-    }
+  if (!args.type) {
+    IO.printRedAndExit('No version type specified.', 1)
+    return
   }
 
-  if (
-    args.prerelease ||
-    args.premajor ||
-    args.preminor ||
-    args.prepatch ||
-    args.nightly
-  ) {
+  switch (args.type) {
+    case VersionTypes.MAJOR:
+    case VersionTypes.PREMAJOR:
+      newVersion = VersionUtils.majorVersion(newVersion)
+      break
+    case VersionTypes.MINOR:
+    case VersionTypes.PREMINOR:
+      newVersion = VersionUtils.minorVersion(newVersion)
+      break
+    case VersionTypes.PATCH:
+    case VersionTypes.PREPATCH:
+      newVersion = VersionUtils.patchVersion(newVersion)
+      break
+    case VersionTypes.NIGHTLY:
+      if (pkgVersion.pre === undefined) {
+        newVersion = VersionUtils.patchVersion(newVersion)
+      }
+      break
+    default:
+      newVersion = VersionUtils.parseVersion(args.type)
+
+      if (!newVersion) {
+        IO.printRedAndExit('Invalid version format specified.', 1)
+        return
+      }
+  }
+
+  if (VersionUtils.isPreVersion(args.type)) {
     newVersion = VersionUtils.preVersion(newVersion)
   }
 
@@ -95,15 +95,13 @@ function versionCommand(args: Args, pkg: Package): void {
 
   pkg.version = VersionUtils.stringify(newVersion)
 
-  FileUtils.updatePackage(pkg)
+  PackageUtils.updatePackage(pkg)
 
   IO.printWhiteAndExit(
     `New package version: ${VersionUtils.stringify(newVersion)}`,
     0
   )
 }
-
-function changeCommand(args: Args, pkg: Package): void {}
 
 export function run(args: string[]): void {
   const parsedArgs = parseArguments(args)
@@ -112,14 +110,14 @@ export function run(args: string[]): void {
     IO.printRedAndExit('No command specified.', 1)
   }
 
-  const pkg = FileUtils.getPackage()
+  const pkg = PackageUtils.getPackage()
 
   switch (parsedArgs.commands[0]) {
     case Commands.VERSION:
       versionCommand(parsedArgs, pkg)
       return
     case Commands.CHANGE:
-      changeCommand(parsedArgs, pkg)
+    // changeCommand(parsedArgs, pkg)
     default:
       IO.printRedAndExit(
         "Invalid command passed in. Run the command 'nspm help' for valid commands.",
