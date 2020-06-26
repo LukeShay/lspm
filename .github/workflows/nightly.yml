@@ -24,7 +24,7 @@ jobs:
         run: npm run test
   publish:
     runs-on: ubuntu-latest
-    needs: [build, test]
+    needs: [build]
     name: Version and publish
     steps:
       - name: Checkout
