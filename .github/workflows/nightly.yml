@@ -39,7 +39,7 @@ jobs:
       - name: Run build
         run: npm run build
       - name: Install lspm
-        run: npm i -g
+        run: npm link
       - name: Version
         run: lspm version --nightly
       - name: Run publish
