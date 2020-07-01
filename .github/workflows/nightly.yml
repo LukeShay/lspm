@@ -38,10 +38,8 @@ jobs:
         run: npm i
       - name: Run build
         run: npm run build
-      - name: Install lspm
-        run: npm link
       - name: Version
-        run: lspm version --nightly
+        run: ./bin/run.sh version --nightly
       - name: Run publish
         run: npm publish
         env:
