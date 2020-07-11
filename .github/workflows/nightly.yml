@@ -39,7 +39,7 @@ jobs:
       - name: Run build
         run: npm run build
       - name: Version
-        run: ./bin/run.sh version --nightly
+        run: ./bin/run.sh version -t nightly
       - name: Run publish
         run: npm publish
         env:
