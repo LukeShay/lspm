@@ -21,15 +21,17 @@ jobs:
       - name: Run build
         run: npm run build
   test:
-    runs-on: ubuntu-latest
-    name: Test
+    strategy:
+      matrix:
+        node: [ '10', '12', '14' ]
+    name: Node ${{ matrix.node }} test
     steps:
       - name: Checkout
         uses: actions/checkout@v2.2.0
       - name: Setup Node.js environment
         uses: actions/setup-node@v1.4.2
         with:
-          node-version: 12
+          node-version: ${{ matrix.node }}
       - name: Install dependencies
         run: npm i
       - name: Run tests
