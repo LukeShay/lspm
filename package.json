@@ -1,6 +1,6 @@
 {
   "name": "@lukeshay/lspm",
-  "version": "0.0.3-1",
+  "version": "0.0.3-2",
   "description": "A tool to manage your NPM package.",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
