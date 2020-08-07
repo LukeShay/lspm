@@ -15,20 +15,14 @@ const parseVersion = (version: string): Version | undefined => {
   const versionGroups = version.match(versionRegex)?.groups
 
   const parseSplitI = (num: string | undefined): number | undefined =>
-    !num || isNaN(parseInt(num)) ? undefined : parseInt(num)
+    num === undefined || isNaN(parseInt(num)) ? undefined : parseInt(num)
 
-  const major = !versionGroups?.major
-    ? undefined
-    : parseSplitI(versionGroups?.major)
-  const minor = !versionGroups?.minor
-    ? undefined
-    : parseSplitI(versionGroups?.minor)
-  const patch = !versionGroups?.patch
-    ? undefined
-    : parseSplitI(versionGroups?.patch)
-  const pre = !versionGroups?.pre ? undefined : parseSplitI(versionGroups?.pre)
+  const major = parseSplitI(versionGroups?.major)
+  const minor = parseSplitI(versionGroups?.minor)
+  const patch = parseSplitI(versionGroups?.patch)
+  const pre = parseSplitI(versionGroups?.pre)
 
-  return !major || !minor || !patch
+  return major === undefined || minor === undefined || patch === undefined
     ? undefined
     : {
         major,
