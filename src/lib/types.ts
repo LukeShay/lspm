@@ -1,20 +1,20 @@
-export interface Args {
+export type Args = {
   commands: any[]
   type?: string
 }
 
-export interface Version {
+export type Version = {
   major: number
   minor: number
   patch: number
   pre?: number
 }
 
-export interface Package {
+export type Package = {
   version: string
 }
 
-export interface Release {
+export type Release = {
   version: string
   date: string
   added: string[]
@@ -22,17 +22,17 @@ export interface Release {
   fixed: string[]
 }
 
-export interface Changelog {
+export type Changelog = {
   releases: Release[]
 }
 
-export interface Data {
+export type Data = {
   day: number
   month: number
   year: number
 }
 
-export interface CommandHelp {
+export type CommandHelp = {
   arg: string
   message: string
 }

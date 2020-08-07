@@ -16,10 +16,12 @@ jobs:
         uses: actions/setup-node@v1.4.2
         with:
           node-version: ${{ matrix.node }}
+      - name: Install pnpm
+        run: npm i -g pnpm
       - name: Install dependencies
-        run: npm i
+        run: pnpm i
       - name: Run build
-        run: npm run build
+        run: pnpm run build
   test:
     runs-on: ubuntu-latest
     strategy:
@@ -33,10 +35,12 @@ jobs:
         uses: actions/setup-node@v1.4.2
         with:
           node-version: ${{ matrix.node }}
+      - name: Install pnpm
+        run: npm i -g pnpm
       - name: Install dependencies
-        run: npm i
+        run: pnpm i
       - name: Run tests
-        run: npm run test
+        run: pnpm run test
   publish:
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
@@ -50,12 +54,14 @@ jobs:
         with:
           node-version: 12
           registry-url: 'https://registry.npmjs.org'
+      - name: Install pnpm
+        run: npm i -g pnpm
       - name: Install dependencies
-        run: npm i
+        run: pnpm i
       - name: Run build
-        run: npm run build
+        run: pnpm run build
       - name: Run publish
-        run: npm publish
+        run: pnpm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - name: Tag

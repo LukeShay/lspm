@@ -5,27 +5,32 @@ import resolve from '@rollup/plugin-node-resolve'
 import { terser } from 'rollup-plugin-terser'
 import typescript from 'rollup-plugin-typescript2'
 
-export default {
-  input: 'src/index.ts',
-  output: [
-    {
-      file: pkg.main,
-      format: 'cjs',
-      name: 'lspm',
-      esModule: true,
-    },
-  ],
-  plugins: [
-    eslint(),
-    typescript({
-      tsconfig: './tsconfig.json',
-    }),
-    process.env.TERSE &&
-      terser({
-        compress: true,
-        mangle: true,
+export default (args) => {
+  const terser = args.terse ? terser({
+    compress: true,
+    mangle: true,
+  }) : undefined;
+
+  delete args.terse
+
+  return {
+    input: 'src/index.ts',
+    output: [
+      {
+        file: pkg.main,
+        format: 'cjs',
+        name: 'lspm',
+        esModule: true,
+      },
+    ],
+    plugins: [
+      eslint(),
+      typescript({
+        tsconfig: './tsconfig.json',
       }),
-    resolve(),
-    commonjs(),
-  ],
+      terser,
+      resolve(),
+      commonjs(),
+    ],
+  }
 }

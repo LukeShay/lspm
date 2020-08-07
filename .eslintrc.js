@@ -1,7 +1,12 @@
 module.exports = {
-  extends: ['@lukeshay/eslint-config-typescript'],
+  parser: '@typescript-eslint/parser',
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
+  ],
+  plugins: ['@typescript-eslint', 'prettier'],
   rules: {
-    indent: 0,
-    '@typescript-eslint/no-explicit-any': 1,
+    'prettier/prettier': ['error'],
   },
 }
