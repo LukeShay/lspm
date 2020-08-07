@@ -11,7 +11,8 @@ enum Commands {
   CHANGE = 'change',
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 const COMMAND_HELP: CommandHelp[] = [
   {
     arg: 'version',

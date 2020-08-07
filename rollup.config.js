@@ -6,10 +6,22 @@ import { terser } from 'rollup-plugin-terser'
 import typescript from 'rollup-plugin-typescript2'
 
 export default (args) => {
-  const terser = args.terse ? terser({
-    compress: true,
-    mangle: true,
-  }) : undefined;
+  const plugins = [
+    eslint(),
+    typescript({
+      tsconfig: './tsconfig.json',
+    }),
+    resolve(),
+    commonjs(),
+  ]
+
+  args.terse &&
+    plugins.push(
+      terser({
+        compress: true,
+        mangle: true,
+      })
+    )
 
   delete args.terse
 
@@ -23,14 +35,6 @@ export default (args) => {
         esModule: true,
       },
     ],
-    plugins: [
-      eslint(),
-      typescript({
-        tsconfig: './tsconfig.json',
-      }),
-      terser,
-      resolve(),
-      commonjs(),
-    ],
+    plugins,
   }
 }

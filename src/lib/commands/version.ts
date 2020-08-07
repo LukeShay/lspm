@@ -17,17 +17,25 @@ const parseVersion = (version: string): Version | undefined => {
   const parseSplitI = (num: string | undefined): number | undefined =>
     !num || isNaN(parseInt(num)) ? undefined : parseInt(num)
 
-  const major = !versionGroups?.major ? undefined : parseSplitI(versionGroups?.major)
-  const minor = !versionGroups?.minor ? undefined : parseSplitI(versionGroups?.minor)
-  const patch = !versionGroups?.patch ? undefined : parseSplitI(versionGroups?.patch)
+  const major = !versionGroups?.major
+    ? undefined
+    : parseSplitI(versionGroups?.major)
+  const minor = !versionGroups?.minor
+    ? undefined
+    : parseSplitI(versionGroups?.minor)
+  const patch = !versionGroups?.patch
+    ? undefined
+    : parseSplitI(versionGroups?.patch)
   const pre = !versionGroups?.pre ? undefined : parseSplitI(versionGroups?.pre)
 
-  return !major || !minor || !patch ? undefined : {
-    major,
-    minor,
-    patch,
-    pre,
-  }
+  return !major || !minor || !patch
+    ? undefined
+    : {
+        major,
+        minor,
+        patch,
+        pre,
+      }
 }
 
 const majorVersion = (version: Version): Version => {
@@ -61,20 +69,12 @@ const preVersion = (version: Version): Version => {
   }
 }
 
-const releaseVersion = (version: Version): Version => {
-  return {
-    ...version,
-    pre: undefined,
-  }
-}
-
-const validateVersion = (version: Version): Version | undefined => {
-  return version.major !== undefined &&
-    version.minor !== undefined &&
-    version.patch !== undefined
-    ? version
-    : undefined
-}
+// const releaseVersion = (version: Version): Version => {
+//   return {
+//     ...version,
+//     pre: undefined,
+//   }
+// }
 
 const isPreVersion = (versionType: string | undefined): boolean => {
   return (
