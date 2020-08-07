@@ -63,12 +63,12 @@ const preVersion = (version: Version): Version => {
   }
 }
 
-// const releaseVersion = (version: Version): Version => {
-//   return {
-//     ...version,
-//     pre: undefined,
-//   }
-// }
+const releaseVersion = (version: Version): Version => {
+  return {
+    ...version,
+    pre: undefined,
+  }
+}
 
 const isPreVersion = (versionType: string | undefined): boolean => {
   return (
@@ -89,7 +89,7 @@ export const run = (args: Args, pkg: Package): void => {
 
   IOUtils.printWhite(`Current package version: ${stringify(pkgVersion)}`)
 
-  let newVersion: Version | undefined = pkgVersion
+  let newVersion: Version | undefined
 
   if (!args.type) {
     IOUtils.printRedAndExit('No version type specified.', 1)
@@ -99,21 +99,23 @@ export const run = (args: Args, pkg: Package): void => {
   switch (args.type) {
     case VersionTypes.MAJOR:
     case VersionTypes.PREMAJOR:
-      newVersion = majorVersion(newVersion)
+      newVersion = majorVersion(pkgVersion)
       break
     case VersionTypes.MINOR:
     case VersionTypes.PREMINOR:
-      newVersion = minorVersion(newVersion)
+      newVersion = minorVersion(pkgVersion)
       break
     case VersionTypes.PATCH:
     case VersionTypes.PREPATCH:
-      newVersion = patchVersion(newVersion)
+      newVersion = patchVersion(pkgVersion)
       break
     case VersionTypes.NIGHTLY:
       if (pkgVersion.pre === undefined) {
-        newVersion = patchVersion(newVersion)
+        newVersion = patchVersion(pkgVersion)
       }
       break
+    case VersionTypes.RELEASE:
+      newVersion = releaseVersion(pkgVersion)
     default:
       newVersion = parseVersion(args.type)
 
